@@ -1,0 +1,29 @@
+version: '3.0'
+
+services:
+  database:
+    image: postgres:15-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    networks:
+      - my-networks
+    environment:
+      POSTGRES_USER: 'admin'
+      POSTGRES_PASSWORD: 'root'
+      POSTGRES_DB: 'testdb'
+  deepin-backend:
+    build:
+      context: .
+      dockerfile: docker/deepin-backend/Dockerfile
+    ports:
+      - 3000:3000
+    depends_on:
+      - database
+    networks:
+      - my-networks
+
+networks:
+  my-networks:
+    driver: bridge
