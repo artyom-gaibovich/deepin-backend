@@ -1,4 +1,17 @@
-import { Controller, Get, Post, Param, Patch, Delete, Body } from '@nestjs/common';
+import {
+	Controller,
+	Get,
+	Post,
+	Param,
+	Patch,
+	Delete,
+	Body,
+	UsePipes,
+	ValidationPipe,
+	Logger,
+	UseFilters,
+	UseGuards,
+} from '@nestjs/common';
 import { CreateAbonentUseCase } from '../../application/use-cases/create-abonent.use-case';
 import { UpdateAbonentUseCase } from '../../application/use-cases/update-abonent.use-case';
 import { DeleteAbonentUseCase } from '../../application/use-cases/delete-abonent.use-case';
@@ -6,6 +19,8 @@ import { CreateAbonentDto } from '../dto/create-abonent.dto';
 import { UpdateAbonentDto } from '../dto/update-abonent.dto';
 import { FindAbonentUseCase } from '../../application/use-cases/find-abonent.use-case';
 import { FindAbonentsUseCase } from '../../application/use-cases/find-abonents.use-case';
+import { HttpExceptionFilter } from '../../../shared/error/http-exception-filter';
+import { AccessTokenGuard } from '../../../auth/guards/accessToken.guard';
 
 @Controller('abonent')
 export class AbonentController {
@@ -17,12 +32,16 @@ export class AbonentController {
 		private readonly deleteUseCase: DeleteAbonentUseCase,
 	) {}
 
-	@Post()
-	async create(@Body() dto: CreateAbonentDto) {
-		return this.createUseCase.execute(dto.email);
-	}
+	private logger = new Logger(DeleteAbonentUseCase.name);
 
-	@Get()
+	/*	@UseFilters(new HttpExceptionFilter())
+    @UsePipes(new ValidationPipe())
+    @Post('/')
+    async create(@Body() dto: CreateAbonentDto) {
+        return this.createUseCase.execute(dto.email, dto.password);
+    }*/
+
+	@Get('/')
 	async findAll() {
 		return this.findAbonentsUseCase.execute();
 	}
@@ -32,13 +51,15 @@ export class AbonentController {
 		return this.findAbonentUseCase.execute(id);
 	}
 
+	@UseGuards(AccessTokenGuard)
 	@Patch(':id')
-	async update(@Param('id') id: string, @Body() dto: UpdateAbonentDto) {
+	update(@Param('id') id: string, @Body() dto: UpdateAbonentDto) {
 		return this.updateUseCase.execute(id, dto.email);
 	}
 
+	@UseGuards(AccessTokenGuard)
 	@Delete(':id')
-	async delete(@Param('id') id: string) {
+	delete(@Param('id') id: string) {
 		return this.deleteUseCase.execute(id);
 	}
 }

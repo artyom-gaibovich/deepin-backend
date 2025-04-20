@@ -34,5 +34,9 @@ apply-migration:
 	npx prisma migrate deploy
 
 
+
+token:
+	node -e "console.log(require('crypto').randomBytes(256).toString('base64'));"
+
 create-migration:
 	npx prisma migrate dev --create-only
