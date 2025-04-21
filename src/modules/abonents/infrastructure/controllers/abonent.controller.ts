@@ -6,6 +6,7 @@ import { UpdateAbonentDto } from '../dto/update-abonent.dto';
 import { FindAbonentUseCase } from '../../application/use-cases/find-abonent.use-case';
 import { FindAbonentsUseCase } from '../../application/use-cases/find-abonents.use-case';
 import { AccessTokenGuard } from '../../../auth/guards/accessToken.guard';
+import { ColoredLogger } from '../../../../../libs/logging-interceptor';
 
 @Controller('abonent')
 export class AbonentController {
@@ -17,7 +18,7 @@ export class AbonentController {
 		private readonly deleteUseCase: DeleteAbonentUseCase,
 	) {}
 
-	private logger = new Logger(DeleteAbonentUseCase.name);
+	private logger = new ColoredLogger(DeleteAbonentUseCase.name);
 
 	/*	@UseFilters(new HttpExceptionFilter())
     @UsePipes(new ValidationPipe())

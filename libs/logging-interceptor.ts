@@ -1,9 +1,63 @@
-import { CallHandler, ExecutionContext, Logger, NestInterceptor } from '@nestjs/common';
+import {
+	CallHandler,
+	ConsoleLogger,
+	ExecutionContext,
+	Logger,
+	LogLevel,
+	NestInterceptor,
+} from '@nestjs/common';
 import { Request, Response } from 'express';
 import { map, Observable } from 'rxjs';
 
+import * as chalk from 'chalk';
+
+export class ColoredLogger extends ConsoleLogger {
+	private readonly default: chalk.ChalkFunction;
+	private readonly contextLabel = chalk.bold.blue('[App]');
+	constructor(defaultColor = '#1b51c7') {
+		super();
+		this.default = chalk.hex(defaultColor);
+	}
+
+	protected formatMessage(
+		logLevel: LogLevel,
+		message: unknown,
+		pidMessage: string,
+		formattedLogLevel: string,
+		contextMessage: string,
+		timestampDiff: string,
+	): string {
+		const timestamp = chalk.gray(`[${new Date().toISOString()}]`);
+		const ctx = contextMessage ? chalk.red(`${contextMessage}`) : '';
+		return super.formatMessage(
+			logLevel,
+			message,
+			pidMessage,
+			formattedLogLevel,
+			contextMessage,
+			timestampDiff,
+		);
+	}
+
+	log(message: string, ...rest: any[]) {
+		super.log(chalk.hex('#00ff9c')(message), ...rest);
+	}
+
+	error(message: any, ...rest: any[]) {
+		super.error(chalk.hex('#ff00ff')(message), ...rest);
+	}
+
+	debug(message: any, ...rest: any[]) {
+		super.debug(chalk.hex('#9b59b6')(message), ...rest);
+	}
+
+	warn(message: string, ...rest: any[]) {
+		super.warn(chalk.hex('#ffffff')(message), ...rest);
+	}
+}
+
 export class LoggingInterceptor implements NestInterceptor {
-	private readonly logger = new Logger(LoggingInterceptor.name);
+	private readonly logger = new ColoredLogger(LoggingInterceptor.name);
 
 	intercept(
 		context: ExecutionContext,

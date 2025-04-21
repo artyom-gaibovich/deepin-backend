@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import * as process from 'node:process';
 import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { LoggingInterceptor } from '../libs/logging-interceptor';
+import { ColoredLogger, LoggingInterceptor } from '../libs/logging-interceptor';
 import { HttpExceptionFilter } from '../libs/http-exception-filter';
 
 function setupSwagger(app: INestApplication): void {
@@ -22,7 +22,9 @@ function setupSwagger(app: INestApplication): void {
 
 function bootstrap() {
 	const logger = new Logger('Main');
-	NestFactory.create(AppModule, {}).then((app) => {
+	NestFactory.create(AppModule, {
+		logger: new ColoredLogger(),
+	}).then((app) => {
 		app.enableCors({
 			origin: ['http://localhost:3000'],
 			methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
