@@ -1,25 +1,10 @@
-import {
-	Controller,
-	Get,
-	Post,
-	Param,
-	Patch,
-	Delete,
-	Body,
-	UsePipes,
-	ValidationPipe,
-	Logger,
-	UseFilters,
-	UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Logger, Param, Patch, UseGuards } from '@nestjs/common';
 import { CreateAbonentUseCase } from '../../application/use-cases/create-abonent.use-case';
 import { UpdateAbonentUseCase } from '../../application/use-cases/update-abonent.use-case';
 import { DeleteAbonentUseCase } from '../../application/use-cases/delete-abonent.use-case';
-import { CreateAbonentDto } from '../dto/create-abonent.dto';
 import { UpdateAbonentDto } from '../dto/update-abonent.dto';
 import { FindAbonentUseCase } from '../../application/use-cases/find-abonent.use-case';
 import { FindAbonentsUseCase } from '../../application/use-cases/find-abonents.use-case';
-import { HttpExceptionFilter } from '../../../shared/error/http-exception-filter';
 import { AccessTokenGuard } from '../../../auth/guards/accessToken.guard';
 
 @Controller('abonent')
@@ -37,7 +22,7 @@ export class AbonentController {
 	/*	@UseFilters(new HttpExceptionFilter())
     @UsePipes(new ValidationPipe())
     @Post('/')
-    async create(@Body() dto: CreateAbonentDto) {
+    async create(@Body() dto: CreateProxyDto) {
         return this.createUseCase.execute(dto.email, dto.password);
     }*/
 

@@ -12,7 +12,6 @@ import {
 import { AuthService } from '../../auth.service';
 import { CreateAbonentDto } from '../../../abonents/infrastructure/dto/create-abonent.dto';
 import { AuthDto } from '../../dto/auth.dto';
-import { HttpExceptionFilter } from '../../../shared/error/http-exception-filter';
 import { AccessTokenGuard } from '../../guards/accessToken.guard';
 import { RefreshTokenGuard } from '../../guards/refreshToken.guard';
 
@@ -21,13 +20,11 @@ export class AuthController {
 	constructor(private authService: AuthService) {}
 
 	@UsePipes(new ValidationPipe())
-	@UseFilters(new HttpExceptionFilter())
 	@Post('signup')
 	signup(@Body() createUserDto: CreateAbonentDto) {
 		return this.authService.signUp(createUserDto);
 	}
 
-	@UseFilters(new HttpExceptionFilter())
 	@UsePipes(new ValidationPipe())
 	@Post('signin')
 	signin(@Body() data: AuthDto) {

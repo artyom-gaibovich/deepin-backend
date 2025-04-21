@@ -25,8 +25,12 @@ model Abonent {
 
 model Proxy {
   id        String           @id @default(uuid())
-  ip        String
-  port      Int
+  ip        String?
+  port      Int?
+  protocol  String?
+  host      String?
+  username  String?
+  password  String?
   createdAt DateTime         @default(now())
   updatedAt DateTime         @updatedAt
   abonents  ProxyToAbonent[]
