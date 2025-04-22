@@ -1,7 +1,15 @@
-import { Inject, Injectable } from '@nestjs/common';
+import {
+	BadRequestException,
+	Inject,
+	Injectable,
+	NotFoundException,
+	UseFilters,
+} from '@nestjs/common';
 import { ProxyRepository } from '../../../application/repositories/proxy.repository';
 import { ProxyEntity } from '../../../domain/entities/proxy.entity';
 import { PrismaService } from '../../../../shared/persistence/prisma/prisma.service';
+import { HttpExceptionFilter } from '../../../../../../libs/http-exception-filter';
+import { PrismaClientExceptionFilter } from '../../../../../../libs/prisma-exceptio-filter';
 
 @Injectable()
 export class ProxyPrismaRepository extends ProxyRepository {
@@ -9,8 +17,8 @@ export class ProxyPrismaRepository extends ProxyRepository {
 		super();
 	}
 
-	create(data: Partial<ProxyEntity>): Promise<void> {
-		return this.prismaService.proxy
+	create = (data: Partial<ProxyEntity>): Promise<void> =>
+		this.prismaService.proxy
 			.create({
 				data: {
 					...data,
@@ -18,21 +26,18 @@ export class ProxyPrismaRepository extends ProxyRepository {
 			})
 			.then((d) => d)
 			.catch((e) => e);
-	}
 
-	delete(id: string): Promise<void> {
-		return this.prismaService.proxy
+	delete = (id: string): Promise<any> =>
+		this.prismaService.proxy
 			.delete({
 				where: {
 					id,
 				},
 			})
-			.then((d) => d)
-			.catch((err) => err);
-	}
+			.then((d) => d);
 
-	findAll(params: Record<string, unknown>): Promise<ProxyEntity[]> {
-		return this.prismaService.proxy
+	findAll = (params: Record<string, unknown>): Promise<ProxyEntity[]> =>
+		this.prismaService.proxy
 			.findMany({
 				where: {
 					...params,
@@ -40,10 +45,9 @@ export class ProxyPrismaRepository extends ProxyRepository {
 			})
 			.then((d) => d)
 			.catch((err) => err);
-	}
 
-	findById(id: string): Promise<ProxyEntity | null> {
-		return this.prismaService.proxy
+	findById = (id: string): Promise<ProxyEntity | null> =>
+		this.prismaService.proxy
 			.findUnique({
 				where: {
 					id,
@@ -51,10 +55,9 @@ export class ProxyPrismaRepository extends ProxyRepository {
 			})
 			.then((data) => data)
 			.catch((err) => err);
-	}
 
-	update(id: string, data: Partial<ProxyEntity>): Promise<ProxyEntity> {
-		return this.prismaService.proxy
+	update = (id: string, data: Partial<ProxyEntity>): Promise<ProxyEntity> =>
+		this.prismaService.proxy
 			.update({
 				where: {
 					id,
@@ -65,5 +68,4 @@ export class ProxyPrismaRepository extends ProxyRepository {
 			})
 			.then((d) => d)
 			.catch((e) => e);
-	}
 }

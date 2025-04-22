@@ -1,12 +1,16 @@
 import {
+	BadRequestException,
 	Body,
 	Controller,
+	Delete,
 	Get,
+	HttpException,
 	HttpStatus,
 	Inject,
 	Param,
 	Patch,
 	Post,
+	UseFilters,
 	UseGuards,
 } from '@nestjs/common';
 import { AccessTokenGuard } from '../../../auth/guards/accessToken.guard';
@@ -20,6 +24,7 @@ import {
 } from '@nestjs/swagger';
 import { ResponseDescription } from './response-description';
 import { CreateProxyDto } from '../dto/create-proxy.dto';
+import { HttpExceptionFilter } from '../../../../../libs/http-exception-filter';
 
 @Controller('proxies')
 export class ProxiesController {
@@ -42,7 +47,6 @@ export class ProxiesController {
 		return this.proxyUseCases.updateProxy(id, updatedDTO);
 	}
 
-	@UseGuards(AccessTokenGuard)
 	@Get(':id')
 	find(@Param('id') id: string) {
 		return this.proxyUseCases.findProxy(id);
@@ -61,5 +65,10 @@ export class ProxiesController {
 	@Post('/')
 	create(@Body() createProxyDto: CreateProxyDto) {
 		return this.proxyUseCases.createProxy(createProxyDto);
+	}
+
+	@Delete(':id')
+	delete(@Param('id') id: string) {
+		return this.proxyUseCases.deleteProxy(id);
 	}
 }

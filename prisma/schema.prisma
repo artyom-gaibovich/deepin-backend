@@ -19,8 +19,10 @@ model Abonent {
   passwordHash String
   refreshToken String?
   createdAt    DateTime         @default(now())
-  updatedAt    DateTime         @updatedAt
+  updatedAt    DateTime?        @updatedAt
   proxies      ProxyToAbonent[]
+
+  @@map("abonents")
 }
 
 model Proxy {
@@ -32,17 +34,20 @@ model Proxy {
   username  String?
   password  String?
   createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
+  updatedAt DateTime?        @updatedAt
   abonents  ProxyToAbonent[]
+
+  @@map("proxies")
 }
 
 model ProxyToAbonent {
-  id        String   @id @default(uuid())
-  proxy     Proxy    @relation(fields: [proxyId], references: [id])
+  proxy     Proxy     @relation(fields: [proxyId], references: [id])
   proxyId   String
-  abonent   Abonent  @relation(fields: [abonentId], references: [id])
+  abonent   Abonent   @relation(fields: [abonentId], references: [id])
   abonentId String
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
 
   @@unique([proxyId, abonentId], name: "proxyId_abonentId")
+  @@map("proxies_to_abonents")
 }

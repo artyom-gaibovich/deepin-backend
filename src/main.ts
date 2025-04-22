@@ -5,6 +5,7 @@ import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ColoredLogger, LoggingInterceptor } from '../libs/logging-interceptor';
 import { HttpExceptionFilter } from '../libs/http-exception-filter';
+import { PrismaClientExceptionFilter } from '../libs/prisma-exceptio-filter';
 
 function setupSwagger(app: INestApplication): void {
 	const documentBuilder = new DocumentBuilder()
