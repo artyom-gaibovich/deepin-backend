@@ -5,6 +5,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { AbonentsModule } from './modules/abonents/abonents.module';
 import { ProxiesModule } from './modules/proxies/proxies.module';
 import { SharedModule } from './modules/shared/shared.module';
+import { PrometheusModule } from './modules/prometheus/prometheus.module';
+import { PrometheusService } from './modules/prometheus/prometheus.service';
 
 @Module({
 	imports: [
@@ -15,8 +17,9 @@ import { SharedModule } from './modules/shared/shared.module';
 			type: 'prisma',
 			global: true,
 		}),
+		PrometheusModule,
 	],
 	controllers: [AppController],
-	providers: [AppService],
+	providers: [AppService, PrometheusService],
 })
 export class AppModule {}

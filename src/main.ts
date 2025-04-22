@@ -31,9 +31,10 @@ function bootstrap() {
 			allowedHeaders: 'Content-Type, Accept, Authorization',
 			credentials: true,
 		});
-		app.useGlobalPipes(new ValidationPipe());
 		app.useGlobalInterceptors(new LoggingInterceptor());
 		app.useGlobalFilters(new HttpExceptionFilter());
+		app.useGlobalPipes(new ValidationPipe());
+
 		setupSwagger(app);
 		app
 			.listen(process.env.PORT ?? 3000, () => {

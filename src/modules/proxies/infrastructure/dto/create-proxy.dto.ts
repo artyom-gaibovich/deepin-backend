@@ -1,6 +1,10 @@
-import { IsEmail, IsOptional, IsString } from 'class-validator';
+import { IsEmail, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateProxyDto {
+	@IsOptional()
+	@IsString()
+	ip: string;
+
 	@IsOptional()
 	@IsString()
 	username: string;
@@ -9,7 +13,6 @@ export class CreateProxyDto {
 	@IsOptional()
 	password: string;
 
-	@IsString()
 	@IsOptional()
 	host: string;
 
@@ -17,7 +20,7 @@ export class CreateProxyDto {
 	@IsOptional()
 	protocol: string;
 
-	@IsString()
+	@IsNumber()
 	@IsOptional()
 	port: number;
 }
