@@ -9,14 +9,6 @@ export class CreateAbonentUseCase {
 	private logger = new Logger(CreateAbonentUseCase.name);
 
 	async execute({ email, passwordHash }): Promise<Abonent> {
-		return this.repository
-			.create({ email, passwordHash })
-			.then((data) => data)
-			.catch((err) => {
-				if (err.code === 'P2002') {
-					throw new BadRequestException(`Abonent with email ${email} already exists`);
-				}
-				throw err;
-			});
+		return this.repository.create({ email, passwordHash }).then((data) => data);
 	}
 }

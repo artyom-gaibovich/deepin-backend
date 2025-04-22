@@ -40,11 +40,11 @@ export class ColoredLogger extends ConsoleLogger {
 	}
 
 	log(message: string, ...rest: any[]) {
-		super.log(chalk.hex('#00ff9c')(message), ...rest);
+		super.log(chalk.hex('#00ff9c')(message, ...rest));
 	}
 
 	error(message: any, ...rest: any[]) {
-		super.error(chalk.hex('#ff00ff')(message), ...rest);
+		super.error(chalk.hex('#ff005c')(`${message}`, ...rest));
 	}
 
 	debug(message: any, ...rest: any[]) {

@@ -10,7 +10,7 @@ import { Prisma } from '@prisma/client';
 import { Request, Response } from 'express';
 import { throwError } from 'rxjs';
 
-export const GRPC_CODE_FROM_HTTP: Record<number, number> = {
+export const GRPC_CODE_FROM_HHTTP: Record<number, number> = {
 	[HttpStatus.OK]: HttpStatus.OK,
 	[HttpStatus.BAD_GATEWAY]: HttpStatus.BAD_GATEWAY,
 	[HttpStatus.UNPROCESSABLE_ENTITY]: HttpStatus.UNPROCESSABLE_ENTITY,

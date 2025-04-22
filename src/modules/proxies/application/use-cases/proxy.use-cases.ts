@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ProxyEntity } from '../../domain/entities/proxy.entity';
 import { ProxyRepository } from '../repositories/proxy.repository';
 import { CreateProxyDto } from '../../infrastructure/dto/create-proxy.dto';
@@ -8,9 +8,13 @@ import { UpdateProxyDto } from '../../infrastructure/dto/update-proxy.dto';
 export class ProxyUseCases {
 	constructor(@Inject() private repository: ProxyRepository) {}
 
-	findProxy(id: string): Promise<ProxyEntity> {
-		return this.repository.findById(id);
-	}
+	findProxy = (id: string): Promise<ProxyEntity> =>
+		this.repository.findById(id).then((proxyEntity: ProxyEntity) => {
+			if (!proxyEntity) {
+				throw new NotFoundException(`Not found proxy entity with id ${id}`);
+			}
+			return proxyEntity;
+		});
 
 	findProxies(id: string): Promise<ProxyEntity[]> {
 		return this.repository.findAll({ id });

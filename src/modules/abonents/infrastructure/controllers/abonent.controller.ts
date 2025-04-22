@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Logger, Param, Patch, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { CreateAbonentUseCase } from '../../application/use-cases/create-abonent.use-case';
 import { UpdateAbonentUseCase } from '../../application/use-cases/update-abonent.use-case';
 import { DeleteAbonentUseCase } from '../../application/use-cases/delete-abonent.use-case';
@@ -6,7 +6,7 @@ import { UpdateAbonentDto } from '../dto/update-abonent.dto';
 import { FindAbonentUseCase } from '../../application/use-cases/find-abonent.use-case';
 import { FindAbonentsUseCase } from '../../application/use-cases/find-abonents.use-case';
 import { AccessTokenGuard } from '../../../auth/guards/accessToken.guard';
-import { ColoredLogger } from '../../../../../libs/logging-interceptor';
+import { CreateAbonentDto } from '../dto/create-abonent.dto';
 
 @Controller('abonent')
 export class AbonentController {
@@ -18,14 +18,11 @@ export class AbonentController {
 		private readonly deleteUseCase: DeleteAbonentUseCase,
 	) {}
 
-	private logger = new ColoredLogger(DeleteAbonentUseCase.name);
-
-	/*	@UseFilters(new HttpExceptionFilter())
-    @UsePipes(new ValidationPipe())
-    @Post('/')
-    async create(@Body() dto: CreateProxyDto) {
-        return this.createUseCase.execute(dto.email, dto.password);
-    }*/
+	@UseGuards(AccessTokenGuard)
+	@Post('/')
+	create(@Body() dto: CreateAbonentDto) {
+		return this.createUseCase.execute({ email: dto.email, passwordHash: dto.password });
+	}
 
 	@Get('/')
 	async findAll() {

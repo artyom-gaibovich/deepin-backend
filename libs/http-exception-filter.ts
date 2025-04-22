@@ -48,6 +48,22 @@ export const HTTP_CODE_FROM_PRISMA: Record<string, { status: number; message: st
 		message: 'The queried entity does not exist',
 	},
 };
+export const HTTP_CODES: Record<number, number> = {
+	[HttpStatus.OK]: HttpStatus.OK,
+	[HttpStatus.BAD_GATEWAY]: HttpStatus.BAD_GATEWAY,
+	[HttpStatus.UNPROCESSABLE_ENTITY]: HttpStatus.UNPROCESSABLE_ENTITY,
+	[HttpStatus.REQUEST_TIMEOUT]: HttpStatus.REQUEST_TIMEOUT,
+	[HttpStatus.NOT_FOUND]: HttpStatus.NOT_FOUND,
+	[HttpStatus.CONFLICT]: HttpStatus.CONFLICT,
+	[HttpStatus.FORBIDDEN]: HttpStatus.FORBIDDEN,
+	[HttpStatus.PRECONDITION_REQUIRED]: HttpStatus.PRECONDITION_REQUIRED,
+	[HttpStatus.METHOD_NOT_ALLOWED]: HttpStatus.METHOD_NOT_ALLOWED,
+	[HttpStatus.PAYLOAD_TOO_LARGE]: HttpStatus.PAYLOAD_TOO_LARGE,
+	[HttpStatus.NOT_IMPLEMENTED]: HttpStatus.NOT_IMPLEMENTED,
+	[HttpStatus.BAD_REQUEST]: HttpStatus.BAD_REQUEST,
+	[HttpStatus.INTERNAL_SERVER_ERROR]: HttpStatus.INTERNAL_SERVER_ERROR,
+	[HttpStatus.UNAUTHORIZED]: HttpStatus.UNAUTHORIZED,
+};
 
 @Catch(
 	HttpException,
@@ -91,13 +107,12 @@ export class HttpExceptionFilter
 				const statusCode = mapper.status;
 				const message = mapper.message;
 				this.logger.error(
-					{
-						request: {
-							method: request.method,
-							url: request.url,
-							body: request.body,
-						},
-					},
+					JSON.stringify({
+						message: exception.message,
+						method: request.method,
+						url: request.url,
+						body: request.body,
+					}),
 					exception.stack,
 				);
 				return response.status(statusCode).json({
@@ -111,24 +126,23 @@ export class HttpExceptionFilter
 
 		if (exception instanceof HttpException) {
 			this.logger.error(
-				{
-					request: {
-						method: request.method,
-						url: request.url,
-						body: request.body,
-					},
-				},
+				JSON.stringify({
+					method: request.method,
+					url: request.url,
+					body: request.body,
+				}),
 				exception.stack,
 			);
 			if (exception.getStatus() === HttpStatus.INTERNAL_SERVER_ERROR)
 				return response.status(500).json();
-			if (
-				exception.getStatus() === 404 &&
-				exception.message.split(' ')[0] === 'Cannot' &&
-				exception.message.split(' ').length === 3
-			)
-				return response.status(404).json();
-			return response.status(exception.getStatus()).json(exception.getResponse());
+			if (Object.keys(HTTP_CODES).includes(String(exception.getStatus()))) {
+				return response.status(exception.getStatus()).json({
+					message: (exception.getResponse() as typeof exception & { message: any }).message,
+					method: request.method,
+					url: request.url,
+					body: request.body,
+				});
+			}
 		}
 
 		this.logger.error(

@@ -17,55 +17,41 @@ export class ProxyPrismaRepository extends ProxyRepository {
 		super();
 	}
 
-	create = (data: Partial<ProxyEntity>): Promise<void> =>
-		this.prismaService.proxy
-			.create({
-				data: {
-					...data,
-				},
-			})
-			.then((d) => d)
-			.catch((e) => e);
+	create = (data: Partial<ProxyEntity>): Promise<ProxyEntity> =>
+		this.prismaService.proxy.create({
+			data: {
+				...data,
+			},
+		});
 
 	delete = (id: string): Promise<any> =>
-		this.prismaService.proxy
-			.delete({
-				where: {
-					id,
-				},
-			})
-			.then((d) => d);
+		this.prismaService.proxy.delete({
+			where: {
+				id,
+			},
+		});
 
 	findAll = (params: Record<string, unknown>): Promise<ProxyEntity[]> =>
-		this.prismaService.proxy
-			.findMany({
-				where: {
-					...params,
-				},
-			})
-			.then((d) => d)
-			.catch((err) => err);
+		this.prismaService.proxy.findMany({
+			where: {
+				...params,
+			},
+		});
 
 	findById = (id: string): Promise<ProxyEntity | null> =>
-		this.prismaService.proxy
-			.findUnique({
-				where: {
-					id,
-				},
-			})
-			.then((data) => data)
-			.catch((err) => err);
+		this.prismaService.proxy.findUnique({
+			where: {
+				id,
+			},
+		});
 
 	update = (id: string, data: Partial<ProxyEntity>): Promise<ProxyEntity> =>
-		this.prismaService.proxy
-			.update({
-				where: {
-					id,
-				},
-				data: {
-					...data,
-				},
-			})
-			.then((d) => d)
-			.catch((e) => e);
+		this.prismaService.proxy.update({
+			where: {
+				id,
+			},
+			data: {
+				...data,
+			},
+		});
 }

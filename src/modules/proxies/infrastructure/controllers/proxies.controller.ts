@@ -47,12 +47,13 @@ export class ProxiesController {
 		return this.proxyUseCases.updateProxy(id, updatedDTO);
 	}
 
+	/*@UseGuards(AccessTokenGuard)*/
 	@Get(':id')
 	find(@Param('id') id: string) {
 		return this.proxyUseCases.findProxy(id);
 	}
 
-	@UseGuards(AccessTokenGuard)
+	/*@UseGuards(AccessTokenGuard)*/
 	@Get(':id')
 	findAll(@Param('id') id: string) {
 		return this.proxyUseCases.findProxies(id);
