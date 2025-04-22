@@ -1,15 +1,7 @@
-import {
-	BadRequestException,
-	Inject,
-	Injectable,
-	NotFoundException,
-	UseFilters,
-} from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ProxyRepository } from '../../../application/repositories/proxy.repository';
 import { ProxyEntity } from '../../../domain/entities/proxy.entity';
 import { PrismaService } from '../../../../shared/persistence/prisma/prisma.service';
-import { HttpExceptionFilter } from '../../../../../../libs/http-exception-filter';
-import { PrismaClientExceptionFilter } from '../../../../../../libs/prisma-exceptio-filter';
 
 @Injectable()
 export class ProxyPrismaRepository extends ProxyRepository {

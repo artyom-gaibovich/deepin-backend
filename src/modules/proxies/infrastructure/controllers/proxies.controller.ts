@@ -1,19 +1,14 @@
 import {
-	BadRequestException,
 	Body,
 	Controller,
 	Delete,
 	Get,
-	HttpException,
 	HttpStatus,
 	Inject,
 	Param,
 	Patch,
 	Post,
-	UseFilters,
-	UseGuards,
 } from '@nestjs/common';
-import { AccessTokenGuard } from '../../../auth/guards/accessToken.guard';
 import { ProxyUseCases } from '../../application/use-cases/proxy.use-cases';
 import { UpdateProxyDto } from '../dto/update-proxy.dto';
 import {
@@ -24,7 +19,6 @@ import {
 } from '@nestjs/swagger';
 import { ResponseDescription } from './response-description';
 import { CreateProxyDto } from '../dto/create-proxy.dto';
-import { HttpExceptionFilter } from '../../../../../libs/http-exception-filter';
 
 @Controller('proxies')
 export class ProxiesController {

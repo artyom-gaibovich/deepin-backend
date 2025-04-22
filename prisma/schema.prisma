@@ -25,12 +25,22 @@ model Abonent {
   @@map("abonents")
 }
 
+model DeepinProjectCreds {
+  id             String           @id @default(uuid())
+  title          String?
+  credentials    Json
+  ProxyToAbonent ProxyToAbonent[]
+
+  @@map("deepin_project_creds")
+}
+
 model Proxy {
   id        String           @id @default(uuid())
   ip        String?
   port      Int?
   protocol  String?
   host      String?
+  is_active Boolean?
   username  String?
   password  String?
   createdAt DateTime         @default(now())
@@ -41,13 +51,17 @@ model Proxy {
 }
 
 model ProxyToAbonent {
-  proxy     Proxy     @relation(fields: [proxyId], references: [id])
+  proxy     Proxy   @relation(fields: [proxyId], references: [id])
   proxyId   String
-  abonent   Abonent   @relation(fields: [abonentId], references: [id])
+  abonent   Abonent @relation(fields: [abonentId], references: [id])
   abonentId String
+
+  deepinProjectCreds  DeepinProjectCreds @relation(fields: [deepnProjectCredsId], references: [id])
+  deepnProjectCredsId String
+
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
 
-  @@unique([proxyId, abonentId], name: "proxyId_abonentId")
-  @@map("proxies_to_abonents")
+  @@unique([proxyId, abonentId, deepnProjectCredsId], name: "proxyId_abonentId_deepnProjectCredsId")
+  @@map("proxies_abonent_credentials")
 }
