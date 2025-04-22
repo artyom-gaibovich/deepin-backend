@@ -34,13 +34,11 @@ export class AbonentController {
 		return this.findAbonentUseCase.execute(id);
 	}
 
-	@UseGuards(AccessTokenGuard)
 	@Patch(':id')
 	update(@Param('id') id: string, @Body() dto: UpdateAbonentDto) {
-		return this.updateUseCase.execute(id, dto.email);
+		return this.updateUseCase.execute(id, { email: dto?.email });
 	}
 
-	@UseGuards(AccessTokenGuard)
 	@Delete(':id')
 	delete(@Param('id') id: string) {
 		return this.deleteUseCase.execute(id);

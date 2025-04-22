@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class UpdateAbonentUseCase {
 	constructor(private readonly repository: AbonentRepository) {}
-	async execute(id: string, email: string) {
+	async execute(id: string, { email }) {
 		return this.repository.update(id, { email });
 	}
 }
