@@ -33,8 +33,6 @@ apply-migration:
 	@echo "Apply migration"
 	npx prisma migrate deploy
 
-
-
 token:
 	node -e "console.log(require('crypto').randomBytes(256).toString('base64'));"
 
