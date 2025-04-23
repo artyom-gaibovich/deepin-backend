@@ -1,4 +1,4 @@
-import { IsEmail, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsEmail, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateProxyDto {
 	@IsOptional()
@@ -23,4 +23,8 @@ export class CreateProxyDto {
 	@IsNumber()
 	@IsOptional()
 	port: number;
+
+	@IsBoolean()
+	@IsOptional()
+	is_active: boolean;
 }

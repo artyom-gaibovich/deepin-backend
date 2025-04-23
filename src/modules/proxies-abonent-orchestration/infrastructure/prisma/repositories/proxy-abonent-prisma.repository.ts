@@ -20,7 +20,7 @@ export class ProxyAbonentPrismaRepository extends ProxyAbonentRepository {
 	public delete = (data: ProxyAbonentLinkEntity): Promise<ProxyAbonentLinkEntity | null> =>
 		this.prismaService.proxyToAbonent.delete({
 			where: {
-				proxyId_abonentId: data,
+				proxyId_abonentId_projectCreedsId: data,
 			},
 		});
 
@@ -30,7 +30,7 @@ export class ProxyAbonentPrismaRepository extends ProxyAbonentRepository {
 				...data,
 			},
 			where: {
-				proxyId_abonentId: data,
+				proxyId_abonentId_projectCreedsId: data,
 			},
 		});
 }

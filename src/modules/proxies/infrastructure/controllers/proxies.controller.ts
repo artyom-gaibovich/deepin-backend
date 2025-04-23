@@ -8,6 +8,7 @@ import {
 	Param,
 	Patch,
 	Post,
+	Put,
 } from '@nestjs/common';
 import { ProxyUseCases } from '../../application/use-cases/proxy.use-cases';
 import { UpdateProxyDto } from '../dto/update-proxy.dto';
@@ -36,7 +37,7 @@ export class ProxiesController {
 	/*
 	@UseGuards(AccessTokenGuard)
 */
-	@Patch(':id')
+	@Put(':id')
 	update(@Param('id') id: string, @Body() updatedDTO: UpdateProxyDto) {
 		return this.proxyUseCases.updateProxy(id, updatedDTO);
 	}
@@ -48,9 +49,11 @@ export class ProxiesController {
 	}
 
 	/*@UseGuards(AccessTokenGuard)*/
-	@Get(':id')
-	findAll(@Param('id') id: string) {
-		return this.proxyUseCases.findProxies(id);
+
+	//TODO Добавить filter=?(чтобы была поисковая выдача по определенным критериям)
+	@Get()
+	findAll() {
+		return this.proxyUseCases.findProxies();
 	}
 
 	/*

@@ -25,13 +25,13 @@ model Abonent {
   @@map("abonents")
 }
 
-model DeepinProjectCreds {
+model ProjectCreeds {
   id             String           @id @default(uuid())
   title          String?
-  credentials    Json
+  credentials    Json?
   ProxyToAbonent ProxyToAbonent[]
 
-  @@map("deepin_project_creds")
+  @@map("project_creeds")
 }
 
 model Proxy {
@@ -56,12 +56,13 @@ model ProxyToAbonent {
   abonent   Abonent @relation(fields: [abonentId], references: [id])
   abonentId String
 
-  deepinProjectCreds  DeepinProjectCreds @relation(fields: [deepnProjectCredsId], references: [id])
-  deepnProjectCredsId String
+  project         ProjectCreeds @relation(fields: [projectCreedsId], references: [id])
+  projectCreedsId String
 
+  status    Boolean?
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
 
-  @@unique([proxyId, abonentId, deepnProjectCredsId], name: "proxyId_abonentId_deepnProjectCredsId")
+  @@unique([proxyId, abonentId, projectCreedsId], name: "proxyId_abonentId_projectCreedsId")
   @@map("proxies_abonent_credentials")
 }

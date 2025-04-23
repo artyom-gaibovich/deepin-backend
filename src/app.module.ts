@@ -8,6 +8,7 @@ import { SharedModule } from './modules/shared/shared.module';
 import { PrometheusModule } from './modules/prometheus/prometheus.module';
 import { PrometheusService } from './modules/prometheus/prometheus.service';
 import { ProxiesAbonentOrchestrationModule } from './modules/proxies-abonent-orchestration/proxies-abonent-orchestration.module';
+import { ProjectCreedsModule } from './modules/project-creeds/project-creeds.module';
 
 @Module({
 	imports: [
@@ -20,6 +21,7 @@ import { ProxiesAbonentOrchestrationModule } from './modules/proxies-abonent-orc
 		}),
 		PrometheusModule,
 		ProxiesAbonentOrchestrationModule,
+		ProjectCreedsModule,
 	],
 	controllers: [AppController],
 	providers: [AppService, PrometheusService],

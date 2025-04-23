@@ -5,5 +5,8 @@ export class RemoveAssigmentProxyToAbonentDto {
 	abonentId: string;
 
 	@IsUUID()
+	projectCreedsId: string;
+
+	@IsUUID()
 	proxyId: string;
 }

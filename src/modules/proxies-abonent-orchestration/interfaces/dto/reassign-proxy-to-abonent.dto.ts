@@ -6,4 +6,7 @@ export class ReassignProxyToAbonentDto {
 
 	@IsUUID()
 	proxyId: string;
+
+	@IsUUID()
+	projectCreedsId: string;
 }

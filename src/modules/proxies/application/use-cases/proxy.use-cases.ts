@@ -16,8 +16,8 @@ export class ProxyUseCases {
 			return proxyEntity;
 		});
 
-	findProxies(id: string): Promise<ProxyEntity[]> {
-		return this.repository.findAll({ id });
+	findProxies(): Promise<ProxyEntity[]> {
+		return this.repository.findAll({});
 	}
 
 	createProxy(ProxyDTO: CreateProxyDto) {

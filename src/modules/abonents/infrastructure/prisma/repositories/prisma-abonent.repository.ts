@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { AbonentRepository } from '../../../application/repositories/abonent.repository';
 import { Abonent } from '../../../domain/entities/abonent';
 import { PrismaService } from '../../../../shared/persistence/prisma/prisma.service';
 import { request } from 'express';
+import { UpdateAbonentDto } from '../../dto/update-abonent.dto';
 
 @Injectable()
 export class PrismaAbonentRepository extends AbonentRepository {
@@ -16,8 +17,15 @@ export class PrismaAbonentRepository extends AbonentRepository {
 	}
 
 	async findById(id: string): Promise<Abonent | null> {
-		const record = await this.prisma.abonent.findUnique({ where: { id } });
-		return record ? this.toEntity(record) : null;
+		const record = await this.prisma.abonent.findUnique({
+			where: {
+				id,
+			},
+		});
+		if (!record) {
+			throw new NotFoundException(id);
+		}
+		return record;
 	}
 
 	async findByEmail(email: string): Promise<Abonent | null> {
@@ -29,8 +37,13 @@ export class PrismaAbonentRepository extends AbonentRepository {
 		return this.prisma.abonent.create({ data }).then((record) => this.toEntity(record));
 	}
 
-	async update(id: string, data: { email?: string }): Promise<Abonent> {
-		const record = await this.prisma.abonent.update({ where: { id }, data });
+	async update(id: string, data: UpdateAbonentDto): Promise<Abonent> {
+		const record = await this.prisma.abonent.update({
+			where: { id: id },
+			data: {
+				...data,
+			},
+		});
 		return this.toEntity(record);
 	}
 

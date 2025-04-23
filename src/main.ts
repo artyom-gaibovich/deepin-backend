@@ -27,7 +27,7 @@ function bootstrap() {
 		logger: new ColoredLogger(),
 	}).then((app) => {
 		app.enableCors({
-			origin: ['http://localhost:3000'],
+			origin: ['http://localhost:3000', 'http://localhost:5173'],
 			methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 			allowedHeaders: 'Content-Type, Accept, Authorization',
 			credentials: true,

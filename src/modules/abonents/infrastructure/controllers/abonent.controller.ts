@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, UseGuards } from '@nestjs/common';
 import { CreateAbonentUseCase } from '../../application/use-cases/create-abonent.use-case';
 import { UpdateAbonentUseCase } from '../../application/use-cases/update-abonent.use-case';
 import { DeleteAbonentUseCase } from '../../application/use-cases/delete-abonent.use-case';
@@ -8,7 +8,7 @@ import { FindAbonentsUseCase } from '../../application/use-cases/find-abonents.u
 import { AccessTokenGuard } from '../../../auth/guards/accessToken.guard';
 import { CreateAbonentDto } from '../dto/create-abonent.dto';
 
-@Controller('abonent')
+@Controller('abonents')
 export class AbonentController {
 	constructor(
 		private readonly createUseCase: CreateAbonentUseCase,
@@ -18,7 +18,9 @@ export class AbonentController {
 		private readonly deleteUseCase: DeleteAbonentUseCase,
 	) {}
 
+	/*
 	@UseGuards(AccessTokenGuard)
+*/
 	@Post('/')
 	create(@Body() dto: CreateAbonentDto) {
 		return this.createUseCase.execute({ email: dto.email, passwordHash: dto.password });
@@ -26,7 +28,7 @@ export class AbonentController {
 
 	@Get('/')
 	async findAll() {
-		return this.findAbonentsUseCase.execute();
+		return this.findAbonentsUseCase.execute().then((d) => d);
 	}
 
 	@Get(':id')
@@ -34,9 +36,9 @@ export class AbonentController {
 		return this.findAbonentUseCase.execute(id);
 	}
 
-	@Patch(':id')
+	@Put(':id')
 	update(@Param('id') id: string, @Body() dto: UpdateAbonentDto) {
-		return this.updateUseCase.execute(id, { email: dto?.email });
+		return this.updateUseCase.execute(id, dto);
 	}
 
 	@Delete(':id')
