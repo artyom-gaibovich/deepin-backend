@@ -19,14 +19,14 @@ export class PrismaProjectCreedsRepository extends ProjectCreedsRepository {
 	delete = (id: string): Promise<any> =>
 		this.prismaService.projectCreeds.delete({
 			where: {
-				id,
+				id: id,
 			},
 		});
 
 	find = (id: string): Promise<ProjectCreedsEntity> =>
 		this.prismaService.projectCreeds.findUnique({
 			where: {
-				id,
+				id: id,
 			},
 		});
 
@@ -35,10 +35,24 @@ export class PrismaProjectCreedsRepository extends ProjectCreedsRepository {
 	update = (id: string, data: Partial<ProjectCreedsEntity>): Promise<ProjectCreedsEntity> =>
 		this.prismaService.projectCreeds.update({
 			where: {
-				id,
+				id: id,
 			},
 			data: {
 				...data,
 			},
 		});
+
+	deleteMany(ids: any[]): Promise<any> {
+		return this.prismaService.$transaction((prisma) => {
+			return Promise.all(
+				ids.map((id) =>
+					prisma.projectCreeds.delete({
+						where: {
+							id: id,
+						},
+					}),
+				),
+			);
+		});
+	}
 }

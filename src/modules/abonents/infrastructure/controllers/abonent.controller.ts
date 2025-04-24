@@ -1,4 +1,15 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put, UseGuards } from '@nestjs/common';
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	Param,
+	Patch,
+	Post,
+	Put,
+	Query,
+	UseGuards,
+} from '@nestjs/common';
 import { CreateAbonentUseCase } from '../../application/use-cases/create-abonent.use-case';
 import { UpdateAbonentUseCase } from '../../application/use-cases/update-abonent.use-case';
 import { DeleteAbonentUseCase } from '../../application/use-cases/delete-abonent.use-case';
@@ -7,6 +18,7 @@ import { FindAbonentUseCase } from '../../application/use-cases/find-abonent.use
 import { FindAbonentsUseCase } from '../../application/use-cases/find-abonents.use-case';
 import { AccessTokenGuard } from '../../../auth/guards/accessToken.guard';
 import { CreateAbonentDto } from '../dto/create-abonent.dto';
+import { DeleteManyAbonentUseCase } from '../../application/use-cases/delete-many-abonent.use-case';
 
 @Controller('abonents')
 export class AbonentController {
@@ -16,6 +28,7 @@ export class AbonentController {
 		private readonly findAbonentsUseCase: FindAbonentsUseCase,
 		private readonly updateUseCase: UpdateAbonentUseCase,
 		private readonly deleteUseCase: DeleteAbonentUseCase,
+		private readonly deleteManyUseCase: DeleteManyAbonentUseCase,
 	) {}
 
 	/*
@@ -44,5 +57,12 @@ export class AbonentController {
 	@Delete(':id')
 	delete(@Param('id') id: string) {
 		return this.deleteUseCase.execute(id);
+	}
+
+	@Delete()
+	deleteMany(@Query('filter') filter: string) {
+		Promise.resolve(filter)
+			.then(JSON.parse)
+			.then(({ id }) => this.deleteManyUseCase.execute(id));
 	}
 }

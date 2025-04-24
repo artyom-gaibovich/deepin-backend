@@ -6,4 +6,5 @@ export abstract class ProxyRepository {
 	abstract create(data: Partial<ProxyEntity>): Promise<ProxyEntity>;
 	abstract update(id: string, data: Partial<ProxyEntity>): Promise<ProxyEntity>;
 	abstract delete(id: string): Promise<void>;
+	abstract deleteMany(ids: any[]): Promise<any>;
 }

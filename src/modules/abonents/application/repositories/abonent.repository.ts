@@ -7,4 +7,5 @@ export abstract class AbonentRepository {
 	abstract create(data: Partial<Abonent>): Promise<Abonent>;
 	abstract update(id: string, data: Partial<Abonent>): Promise<Abonent>;
 	abstract delete(id: string): Promise<any>;
+	abstract deleteMany(ids: any[]): Promise<any>;
 }

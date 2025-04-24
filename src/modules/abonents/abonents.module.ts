@@ -7,6 +7,7 @@ import { FindAbonentUseCase } from './application/use-cases/find-abonent.use-cas
 import { FindAbonentsUseCase } from './application/use-cases/find-abonents.use-case';
 import { DeleteAbonentUseCase } from './application/use-cases/delete-abonent.use-case';
 import { UpdateAbonentUseCase } from './application/use-cases/update-abonent.use-case';
+import { DeleteManyAbonentUseCase } from './application/use-cases/delete-many-abonent.use-case';
 
 const application: Provider[] = [
 	CreateAbonentUseCase,
@@ -14,6 +15,7 @@ const application: Provider[] = [
 	FindAbonentsUseCase,
 	DeleteAbonentUseCase,
 	UpdateAbonentUseCase,
+	DeleteManyAbonentUseCase,
 ];
 const infrastructure: Provider[] = [
 	{

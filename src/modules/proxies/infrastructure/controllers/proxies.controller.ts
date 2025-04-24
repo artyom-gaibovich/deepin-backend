@@ -9,6 +9,7 @@ import {
 	Patch,
 	Post,
 	Put,
+	Query,
 } from '@nestjs/common';
 import { ProxyUseCases } from '../../application/use-cases/proxy.use-cases';
 import { UpdateProxyDto } from '../dto/update-proxy.dto';
@@ -68,5 +69,12 @@ export class ProxiesController {
 	@Delete(':id')
 	delete(@Param('id') id: string) {
 		return this.proxyUseCases.deleteProxy(id);
+	}
+
+	@Delete()
+	deleteMany(@Query('filter') filter: string) {
+		return Promise.resolve(filter)
+			.then(JSON.parse)
+			.then(({ id }) => this.proxyUseCases.deleteMany(id));
 	}
 }

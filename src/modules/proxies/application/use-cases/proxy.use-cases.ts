@@ -40,4 +40,8 @@ export class ProxyUseCases {
 	deleteProxy(id: string): Promise<void> {
 		return this.repository.delete(id);
 	}
+
+	deleteMany(ids: string[]): Promise<void> {
+		return this.repository.deleteMany(ids);
+	}
 }

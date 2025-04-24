@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ProxyRepository } from '../../../application/repositories/proxy.repository';
 import { ProxyEntity } from '../../../domain/entities/proxy.entity';
 import { PrismaService } from '../../../../shared/persistence/prisma/prisma.service';
@@ -46,4 +46,22 @@ export class ProxyPrismaRepository extends ProxyRepository {
 				...data,
 			},
 		});
+
+	deleteMany(ids: any[]): Promise<any> {
+		return this.prismaService.$transaction((prisma) => {
+			return Promise.all(
+				ids.map((id) =>
+					prisma.proxy.delete({
+						where: {
+							id: id,
+						},
+					}),
+				),
+			)
+				.then((data) => data)
+				.catch((e) => {
+					throw new BadRequestException(e);
+				});
+		});
+	}
 }

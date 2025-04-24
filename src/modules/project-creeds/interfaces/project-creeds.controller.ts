@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { CreateProjectCreedsDto } from './dto/create-project-creeds.dto';
 import { UpdateProjectCreedsDto } from './dto/update-project-creeds.dto';
 import { ProjectCreedsUseCases } from '../application/project-creeds.use-cases';
@@ -28,7 +28,14 @@ export class ProjectCreedsController {
 	}
 
 	@Delete(':id')
-	delete(@Param() id: string) {
+	delete(@Param('id') id: string) {
 		return this.projectCreedsUseCases.delete(id);
+	}
+
+	@Delete()
+	deleteMany(@Query('filter') filter: string) {
+		Promise.resolve(filter)
+			.then(JSON.parse)
+			.then(({ id }) => this.projectCreedsUseCases.deleteMany(id));
 	}
 }

@@ -51,6 +51,20 @@ export class PrismaAbonentRepository extends AbonentRepository {
 		return this.prisma.abonent.delete({ where: { id } });
 	}
 
+	deleteMany(ids: any[]): Promise<any> {
+		return this.prisma.$transaction((prisma) => {
+			return Promise.all(
+				ids.map((id) =>
+					prisma.abonent.delete({
+						where: {
+							id: id,
+						},
+					}),
+				),
+			);
+		});
+	}
+
 	private toEntity(record: any): Abonent {
 		return new Abonent(
 			record.id,

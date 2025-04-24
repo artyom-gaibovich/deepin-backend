@@ -34,7 +34,11 @@ function bootstrap() {
 		});
 		app.useGlobalInterceptors(new LoggingInterceptor());
 		app.useGlobalFilters(new HttpExceptionFilter());
-		app.useGlobalPipes(new ValidationPipe());
+		app.useGlobalPipes(
+			new ValidationPipe({
+				forbidNonWhitelisted: true,
+			}),
+		);
 
 		setupSwagger(app);
 		app
