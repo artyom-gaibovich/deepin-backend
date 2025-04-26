@@ -1,4 +1,4 @@
-import { BadRequestException, Controller, Get, Inject, Param } from '@nestjs/common';
+import { BadRequestException, Controller, Get, Inject, Param, Post } from '@nestjs/common';
 import { SocketService } from './service/socket.service';
 
 @Controller('socket-management')
@@ -48,4 +48,7 @@ export class SocketManagementController {
 	stop(@Param('id') id: string): any {
 		return this.socketService.stop(Number(id));
 	}
+
+	@Post('/start')
+	startWork() {}
 }
