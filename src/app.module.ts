@@ -9,6 +9,7 @@ import { PrometheusModule } from './modules/prometheus/prometheus.module';
 import { PrometheusService } from './modules/prometheus/prometheus.service';
 import { ProxiesAbonentOrchestrationModule } from './modules/proxies-abonent-orchestration/proxies-abonent-orchestration.module';
 import { ProjectCreedsModule } from './modules/project-creeds/project-creeds.module';
+import { SocketManagementModule } from './modules/socket-management/socket-management.module';
 
 @Module({
 	imports: [
@@ -22,6 +23,7 @@ import { ProjectCreedsModule } from './modules/project-creeds/project-creeds.mod
 		PrometheusModule,
 		ProxiesAbonentOrchestrationModule,
 		ProjectCreedsModule,
+		SocketManagementModule,
 	],
 	controllers: [AppController],
 	providers: [AppService, PrometheusService],
