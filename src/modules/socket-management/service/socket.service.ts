@@ -80,7 +80,6 @@ export class SocketService {
 
 		const makeRequest = () => {
 			if (isCancelled) return;
-
 			axios
 				.get(`https://jsonplaceholder.typicode.com/posts/${Math.floor(Math.random() * 10) + 1}`)
 				.then(({ data }) => {

@@ -1,11 +1,17 @@
-import { BadRequestException, Controller, Get, Inject, Param, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
 import { SocketService } from './service/socket.service';
+import { StartSocketDto } from './interfaces/dtos/start.dto';
+import { StopSocketDto } from './interfaces/dtos/stop.dto';
+import { SocketManagementUseCases } from './application/use-cases/socket-management.use-cases';
 
 @Controller('socket-management')
 export class SocketManagementController {
 	private users: any;
 
-	constructor(@Inject() private readonly socketService: SocketService) {
+	constructor(
+		@Inject() private readonly socketService: SocketService,
+		@Inject() private readonly socketManagementUseCases: SocketManagementUseCases,
+	) {
 		this.users = {};
 	}
 
@@ -50,5 +56,12 @@ export class SocketManagementController {
 	}
 
 	@Post('/start')
-	startWork() {}
+	startSocket(@Body() dto: StartSocketDto) {
+		return this.socketManagementUseCases.startSocket(dto);
+	}
+
+	@Post('/stop')
+	stopSocket(@Body() dto: StopSocketDto) {
+		return this.socketManagementUseCases.stopSocket(dto);
+	}
 }

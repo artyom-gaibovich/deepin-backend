@@ -51,6 +51,7 @@ model Proxy {
 }
 
 model ProxyToAbonent {
+  id        String  @id @default(uuid())
   proxy     Proxy   @relation(fields: [proxyId], references: [id])
   proxyId   String
   abonent   Abonent @relation(fields: [abonentId], references: [id])
@@ -62,7 +63,33 @@ model ProxyToAbonent {
   status    Boolean?
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
+  Socket    Socket[]
 
   @@unique([proxyId, abonentId, projectCreedsId], name: "proxyId_abonentId_projectCreedsId")
   @@map("proxies_abonent_credentials")
+}
+
+enum SocketStatus {
+  AUTHROIZATED
+  ONLINE
+  OFFLINE
+}
+
+model Socket {
+  id                      String         @id @default(uuid())
+  proxyToAbonentProject   ProxyToAbonent @relation(fields: [proxyToAbonentProjectId], references: [id])
+  proxyToAbonentProjectId String
+  status                  SocketStatus?
+  SocketLogs              SocketLogs[]
+
+  @@map("socket")
+}
+
+model SocketLogs {
+  id       String  @id @default(uuid())
+  socket   Socket? @relation(fields: [socketId], references: [id])
+  socketId String?
+  log      String?
+
+  @@map("socket_logs")
 }

@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../../../shared/persistence/prisma/prisma.service';
 import { ProxyAbonentRepository } from '../../../application/proxy-abonent.repository';
 import { ProxyAbonentLinkEntity } from '../../../domain/entities/proxy-abonent-link.entity';
@@ -33,4 +33,24 @@ export class ProxyAbonentPrismaRepository extends ProxyAbonentRepository {
 				proxyId_abonentId_projectCreedsId: data,
 			},
 		});
+
+	findById(id: string): Promise<ProxyAbonentLinkEntity | null> {
+		return this.prismaService.proxyToAbonent
+			.findUnique({
+				where: {
+					id: id,
+				},
+				include: {
+					proxy: true,
+					project: true,
+					abonent: true,
+				},
+			})
+			.then((record) => {
+				if (!record) {
+					throw new NotFoundException();
+				}
+				return record;
+			});
+	}
 }
