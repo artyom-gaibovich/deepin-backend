@@ -27,7 +27,7 @@ export interface IProxy {
 export interface IProject {
 	id: string;
 	title: string;
-	credentials: string;
+	credentials: Record<string, unknown>;
 }
 
 export interface IAbonent {

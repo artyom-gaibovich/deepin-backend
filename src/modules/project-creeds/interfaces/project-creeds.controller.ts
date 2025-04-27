@@ -23,7 +23,7 @@ export class ProjectCreedsController {
 	}
 
 	@Put(':id')
-	update(@Param() id: string, @Body() dto: UpdateProjectCreedsDto) {
+	update(@Param('id') id: string, @Body() dto: UpdateProjectCreedsDto) {
 		return this.projectCreedsUseCases.update(id, dto);
 	}
 

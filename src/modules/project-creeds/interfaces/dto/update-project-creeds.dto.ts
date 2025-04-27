@@ -1,4 +1,4 @@
-import { IsEmail, IsJSON, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsEmail, IsJSON, IsObject, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class UpdateProjectCreedsDto {
 	@IsUUID()
@@ -8,6 +8,6 @@ export class UpdateProjectCreedsDto {
 	title: string;
 
 	@IsOptional()
-	@IsJSON()
+	@IsObject()
 	credentials: Record<string, any>;
 }
