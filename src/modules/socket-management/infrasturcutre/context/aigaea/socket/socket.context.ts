@@ -1,6 +1,6 @@
 import * as axios from 'axios';
-import { PingInterface, PingResponse } from '../../../../socket';
-import { IProxyAbonentCreeds } from '../../../../proxies-abonent-orchestration/domain/entities/proxy-abonent-link.entity';
+import { PingInterface, PingResponse } from '../../../../../socket';
+import { IProxyAbonentCreeds } from '../../../../../proxies-abonent-orchestration/domain/entities/proxy-abonent-link.entity';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()

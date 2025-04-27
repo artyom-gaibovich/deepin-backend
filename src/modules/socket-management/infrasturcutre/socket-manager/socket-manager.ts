@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { AbstractSocketContext } from '../context/socket/socket.context';
+import { AbstractSocketContext } from '../context/aigaea/socket/socket.context';
 import { IProxyAbonentCreeds } from '../../../proxies-abonent-orchestration/domain/entities/proxy-abonent-link.entity';
 import * as axios from 'axios';
 import { PingInterface, PingResponse } from '../../../socket';
