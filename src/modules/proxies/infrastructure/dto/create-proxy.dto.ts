@@ -1,4 +1,31 @@
-import { IsBoolean, IsEmail, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+	IsArray,
+	IsBoolean,
+	IsEmail,
+	IsJSON,
+	IsNumber,
+	IsObject,
+	IsOptional,
+	IsString,
+} from 'class-validator';
+import { Transform } from 'class-transformer';
+
+export class GetAbonentsDtoQuery {
+	@IsOptional()
+	@IsObject()
+	@Transform(({ value }) => (typeof value === 'string' ? JSON.parse(value) : value))
+	filter?: { abonentId?: string };
+
+	@IsOptional()
+	@IsArray()
+	@Transform(({ value }) => (typeof value === 'string' ? JSON.parse(value) : value))
+	range?: [number, number];
+
+	@IsOptional()
+	@IsArray()
+	@Transform(({ value }) => (typeof value === 'string' ? JSON.parse(value) : value))
+	sort?: [string, 'ASC' | 'DESC'];
+}
 
 export class CreateProxyDto {
 	@IsOptional()

@@ -28,6 +28,10 @@ const infrastructure: Provider[] = [
 		useClass: PrismaProjectCreedsRepository,
 		provide: ProjectCreedsRepository,
 	},
+	{
+		provide: ProxyAbonentRepository,
+		useClass: ProxyAbonentPrismaRepository,
+	},
 ];
 @Module({
 	imports: [],

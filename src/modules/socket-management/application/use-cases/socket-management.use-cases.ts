@@ -50,14 +50,8 @@ export class SocketManagementUseCases {
 			.then((data: IProxyAbonentCreeds) => {
 				const { project, proxy } = data;
 				const { is_active, id } = proxy;
-				const { title } = project;
 				if (!is_active) {
 					throw new BadRequestException(`Proxy ${id} is not active`);
-				}
-				/**
-				 * В зависимости от тайтл делаем стратегию (AIGAEA, GRASS И ТП)
-				 */
-				if (title === 'AIGAEA') {
 				}
 				return this.socketManagerAbstract.handleStart(dto.proxyToAbonentProjectId, data);
 			});

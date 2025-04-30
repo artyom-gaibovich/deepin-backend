@@ -12,14 +12,23 @@ export class PrismaAbonentRepository extends AbonentRepository {
 	}
 
 	async findAll(): Promise<Abonent[]> {
-		const records = await this.prisma.abonent.findMany();
-		return records.map(this.toEntity);
+		const records = await this.prisma.abonent.findMany({
+			include: {
+				proxies: {
+					take: 10,
+				},
+			},
+		});
+		return records;
 	}
 
 	async findById(id: string): Promise<Abonent | null> {
 		const record = await this.prisma.abonent.findUnique({
 			where: {
 				id,
+			},
+			include: {
+				proxies: true,
 			},
 		});
 		if (!record) {
@@ -52,17 +61,20 @@ export class PrismaAbonentRepository extends AbonentRepository {
 	}
 
 	deleteMany(ids: any[]): Promise<any> {
-		return this.prisma.$transaction((prisma) => {
-			return Promise.all(
-				ids.map((id) =>
-					prisma.abonent.delete({
-						where: {
-							id: id,
-						},
-					}),
-				),
-			);
-		});
+		return this.prisma
+			.$transaction((prisma) => {
+				return Promise.all(
+					ids.map((id) =>
+						prisma.abonent.delete({
+							where: {
+								id: id,
+							},
+						}),
+					),
+				);
+			})
+			.then((data) => data)
+			.catch((e) => e);
 	}
 
 	private toEntity(record: any): Abonent {

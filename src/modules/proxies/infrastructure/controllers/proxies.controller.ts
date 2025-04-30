@@ -20,7 +20,7 @@ import {
 	ApiResponse,
 } from '@nestjs/swagger';
 import { ResponseDescription } from './response-description';
-import { CreateProxyDto } from '../dto/create-proxy.dto';
+import { CreateProxyDto, GetAbonentsDtoQuery } from '../dto/create-proxy.dto';
 
 @Controller('proxies')
 export class ProxiesController {
@@ -36,7 +36,7 @@ export class ProxiesController {
 		description: ResponseDescription.INTERNAL_SERVER_ERROR,
 	})
 	/*
-	@UseGuards(AccessTokenGuard)
+    @UseGuards(AccessTokenGuard)
 */
 	@Put(':id')
 	update(@Param('id') id: string, @Body() updatedDTO: UpdateProxyDto) {
@@ -53,12 +53,18 @@ export class ProxiesController {
 
 	//TODO Добавить filter=?(чтобы была поисковая выдача по определенным критериям)
 	@Get()
-	findAll() {
-		return this.proxyUseCases.findProxies();
+	findAll(@Query() query: GetAbonentsDtoQuery) {
+		const { filter, range, sort } = query;
+		return this.proxyUseCases.findProxies({
+			filter,
+			skip: range?.[0] || 0,
+			take: range ? range[1] - range[0] + 1 : 25,
+			orderBy: sort ? { [sort[0]]: sort[1].toLowerCase() } : undefined,
+		});
 	}
 
 	/*
-	@UseGuards(AccessTokenGuard)
+    @UseGuards(AccessTokenGuard)
 */
 
 	@Post('/')

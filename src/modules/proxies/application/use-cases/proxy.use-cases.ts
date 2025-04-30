@@ -3,6 +3,7 @@ import { ProxyEntity } from '../../domain/entities/proxy.entity';
 import { ProxyRepository } from '../repositories/proxy.repository';
 import { CreateProxyDto } from '../../infrastructure/dto/create-proxy.dto';
 import { UpdateProxyDto } from '../../infrastructure/dto/update-proxy.dto';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class ProxyUseCases {
@@ -16,8 +17,13 @@ export class ProxyUseCases {
 			return proxyEntity;
 		});
 
-	findProxies(): Promise<ProxyEntity[]> {
-		return this.repository.findAll({});
+	findProxies(params: {
+		filter?: { abonentId?: string };
+		skip?: number;
+		take?: number;
+		orderBy?: Prisma.AbonentOrderByWithRelationInput;
+	}): Promise<ProxyEntity[]> {
+		return this.repository.findAll(params);
 	}
 
 	createProxy(ProxyDTO: CreateProxyDto) {

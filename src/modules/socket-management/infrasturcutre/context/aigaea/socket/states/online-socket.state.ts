@@ -25,8 +25,8 @@ export class OnlineSocketState extends AbstractSocketState {
 		const { id, config } = this.failsafeSocket;
 		const { project, proxy } = config;
 		const { credentials, title } = project;
-		const { uid, token, browser_id } = credentials;
-		const { protocol, ip, username, password, port } = proxy;
+		const { token, browser_id } = credentials;
+		const { protocol, ip, username, password, port, host } = proxy;
 
 		const { activeRequests } = this.failsafeSocket.socketManager;
 		if (activeRequests.has(id)) return;
@@ -35,7 +35,7 @@ export class OnlineSocketState extends AbstractSocketState {
 		}
 		let isCancelled = false;
 		const authConfig = {
-			uid: uid ?? '',
+			uid: '',
 		};
 		activeRequests.set(id, {
 			cancel: () => {
@@ -51,6 +51,10 @@ export class OnlineSocketState extends AbstractSocketState {
 						token,
 						browser_id,
 						authConfig,
+						password,
+						port,
+						username,
+						host,
 					}),
 				)
 				.then(({ data }) => {
@@ -82,7 +86,13 @@ export class OnlineSocketState extends AbstractSocketState {
 		};
 		const makeAuthRequest = () =>
 			axios.post<PingInterface>(
-				...this.failsafeSocket.AIGAEARequestFactory.find(`GET v1/session/auth`)({ token }),
+				...this.failsafeSocket.AIGAEARequestFactory.find(`GET v1/session/auth`)({
+					token,
+					password,
+					port,
+					username,
+					host,
+				}),
 			);
 
 		const authRequestChain = () => {
@@ -105,13 +115,17 @@ export class OnlineSocketState extends AbstractSocketState {
 					);
 				})
 				.then(pingRequest)
+				.catch((error) => {
+					console.error(`Request ${'x'} failed:`, error.message);
+					return new Promise((resolve) => setTimeout(resolve, 1000));
+				})
 				.then(makePingRequestChain);
 		};
 
-		if (!uid) {
+		if (!authConfig.uid) {
 			authRequestChain();
 		}
-		if (uid) {
+		if (authConfig.uid) {
 			makePingRequestChain();
 		}
 	}

@@ -8,19 +8,27 @@ interface AIGAEARequests {
 
 @Injectable()
 export class AIGAEARequestFactory {
-	private activeRequests: Map<keyof AIGAEARequests, any> = new Map([
+	private activeRequests: Map<any, any> = new Map([
 		[
 			'POST v1/network/ping',
 			({
 				authConfig,
 				browser_id,
 				token,
+				password,
+				port,
+				username,
+				host,
 			}: {
 				token: string;
+				password: string;
+				port: string;
+				host: string;
+				username: string;
 				browser_id: string;
 				authConfig: Record<string, unknown>;
 			}) => [
-				`https://api.aigaea.net/api/network/ping`,
+				`http://api.aigaea.net/api/network/ping`,
 				{
 					timestamp: Math.floor(Date.now() / 1000),
 					version: '1.0.1',
@@ -36,12 +44,32 @@ export class AIGAEARequestFactory {
 						'User-Agent':
 							'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
 					},
+					proxy: {
+						host,
+						port,
+						auth: {
+							username,
+							password,
+						},
+					},
 				},
 			],
 		],
 		[
 			'GET v1/session/auth',
-			({ token }: { token: string }) => [
+			({
+				token,
+				password,
+				port,
+				username,
+				host,
+			}: {
+				token: string;
+				password: string;
+				port: string;
+				host: string;
+				username: string;
+			}) => [
 				'http://api.aigaea.net/api/auth/session',
 				{},
 				{
@@ -52,6 +80,14 @@ export class AIGAEARequestFactory {
 						Authorization: `Bearer ${token}`,
 						'User-Agent':
 							'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
+					},
+					proxy: {
+						host,
+						port,
+						auth: {
+							username,
+							password,
+						},
 					},
 				},
 			],

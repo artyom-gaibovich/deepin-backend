@@ -40,7 +40,7 @@ export class AbonentController {
 	}
 
 	@Get('/')
-	async findAll() {
+	async findAll(@Query('filter') filter: string) {
 		return this.findAbonentsUseCase.execute().then((d) => d);
 	}
 

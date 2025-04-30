@@ -2,7 +2,6 @@ import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../../../shared/persistence/prisma/prisma.service';
 import { ProxyAbonentRepository } from '../../../application/proxy-abonent.repository';
 import { ProxyAbonentLinkEntity } from '../../../domain/entities/proxy-abonent-link.entity';
-import { ProxyEntity } from '../../../../proxies/domain/entities/proxy.entity';
 
 @Injectable()
 export class ProxyAbonentPrismaRepository extends ProxyAbonentRepository {
@@ -52,5 +51,31 @@ export class ProxyAbonentPrismaRepository extends ProxyAbonentRepository {
 				}
 				return record;
 			});
+	}
+
+	findAll(params: any): Promise<ProxyAbonentLinkEntity[] | null> {
+		const { filter, skip, take, orderBy } = params;
+		return this.prismaService.proxyToAbonent.findMany({
+			where: filter,
+			skip,
+			take,
+			orderBy,
+			include: {
+				proxy: true,
+				project: true,
+				abonent: true,
+			},
+		});
+	}
+
+	updateById(id, data: { status: boolean }): Promise<ProxyAbonentLinkEntity | null> {
+		return this.prismaService.proxyToAbonent.update({
+			data: {
+				...data,
+			},
+			where: {
+				id: id,
+			},
+		});
 	}
 }

@@ -3,6 +3,7 @@ import { SocketManagerAbstract } from './socket-manager-abstract';
 import { IProxyAbonentCreeds } from '../../../../../proxies-abonent-orchestration/domain/entities/proxy-abonent-link.entity';
 import { ProjectCreedsRepository } from '../../../../../project-creeds/application/project-creeds.repository';
 import { AIGAEARequestFactory } from '../factory/aigaea-request.factory';
+import { ProxyAbonentRepository } from '../../../../../proxies-abonent-orchestration/application/proxy-abonent.repository';
 
 export class FailsafeSocket {
 	public socketState: AbstractSocketState;
@@ -12,8 +13,11 @@ export class FailsafeSocket {
 	public config: IProxyAbonentCreeds;
 	public projectCreedsRepository: ProjectCreedsRepository;
 	public AIGAEARequestFactory: AIGAEARequestFactory;
+	public ProxyAbonentRepository: ProxyAbonentRepository;
+	public cachedUIDS: Map<string, number> = new Map();
 
 	constructor(
+		ProxyAbonentRepository: ProxyAbonentRepository,
 		AIGAEARequestFactory: AIGAEARequestFactory,
 		projectCreedsRepository: ProjectCreedsRepository,
 		state: AbstractSocketState,
@@ -21,6 +25,7 @@ export class FailsafeSocket {
 		id: string,
 		config: IProxyAbonentCreeds,
 	) {
+		this.ProxyAbonentRepository = ProxyAbonentRepository;
 		this.AIGAEARequestFactory = AIGAEARequestFactory;
 		this.projectCreedsRepository = projectCreedsRepository;
 		this.socketManager = socketManager;
